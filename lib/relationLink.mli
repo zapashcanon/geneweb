@@ -25,11 +25,20 @@ type info =
   }
 
 val threshold : int ref
+
 val make_dist_tab :
   config -> base -> iper -> int -> (iper -> int) * (iper -> int)
+
 val find_first_branch :
-  config -> base -> (iper -> int) * (iper -> int) -> iper -> int -> iper ->
-    sex -> (iper * sex) list option
+     config
+  -> base
+  -> (iper -> int) * (iper -> int)
+  -> iper
+  -> int
+  -> iper
+  -> sex
+  -> (iper * sex) list option
+
 val print_relation_path : config -> base -> info -> unit
 
 val print : config -> base -> unit

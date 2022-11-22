@@ -17,27 +17,26 @@ let () =
     let header s = buffer_headers := s :: !buffer_headers in
     let body s = Buffer.add_string buffer_body s in
     let flush () =
-      conf.output_conf <- { status = previous_status
-                          ; header = previous_header
-                          ; body = previous_body
-                          ; flush = previous_flush
-                          } ;
+      conf.output_conf <-
+        { status = previous_status
+        ; header = previous_header
+        ; body = previous_body
+        ; flush = previous_flush
+        };
       (match !buffer_status with Some s -> Output.status conf s | None -> ());
-      List.iter (Output.header conf "%s") (List.rev !buffer_headers) ;
+      List.iter (Output.header conf "%s") (List.rev !buffer_headers);
       let open Markup in
-      buffer buffer_body
-      |> parse_html
-      |> signals
-      |> map begin function
-        | `Start_element (("http://www.w3.org/1999/xhtml", "a"), _) ->
-          `Start_element (("http://www.w3.org/1999/xhtml", "span"), [])
-        | x -> x
-      end
-      |> write_html
-      |> to_string
-      |> Output.print_sstring conf ;
-      Output.flush conf ;
-      Buffer.reset buffer_body ;
+      buffer buffer_body |> parse_html |> signals
+      |> map
+           begin
+             function
+             | `Start_element (("http://www.w3.org/1999/xhtml", "a"), _) ->
+               `Start_element (("http://www.w3.org/1999/xhtml", "span"), [])
+             | x -> x
+           end
+      |> write_html |> to_string |> Output.print_sstring conf;
+      Output.flush conf;
+      Buffer.reset buffer_body
     in
-    conf.output_conf <- { status ; header ; body ; flush } ;
+    conf.output_conf <- { status; header; body; flush }
   end

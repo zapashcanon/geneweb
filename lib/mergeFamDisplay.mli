@@ -1,11 +1,13 @@
-
-(** Displays differences between couples ; relation kind, marriage, marriage place
-    and divorce. *)
+(** Displays differences between couples ; relation kind, marriage, marriage
+    place and divorce. *)
 val print_differences :
-  Config.config ->
-  Gwdb.base ->
-  (Gwdb.iper * Gwdb.iper) list ->
-  Gwdb.ifam * Gwdb.family -> Gwdb.ifam * Gwdb.family -> unit
+     Config.config
+  -> Gwdb.base
+  -> (Gwdb.iper * Gwdb.iper) list
+  -> Gwdb.ifam * Gwdb.family
+  -> Gwdb.ifam * Gwdb.family
+  -> unit
 
-(** Displays a menu for merging families. Couples must be identical (modulo reversion). *)
+(** Displays a menu for merging families. Couples must be identical (modulo
+    reversion). *)
 val print : Config.config -> Gwdb.base -> unit

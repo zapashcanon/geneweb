@@ -41,11 +41,15 @@ val gregorian_of_hebrew : Def.dmy -> Def.dmy
 val hebrew_of_gregorian : Def.dmy -> Def.dmy
 
 (** Moon phases *)
-type moon_phase = NewMoon | FirstQuarter | FullMoon | LastQuarter
+type moon_phase =
+  | NewMoon
+  | FirstQuarter
+  | FullMoon
+  | LastQuarter
 
-(** Returns information about moon phase from the given SDN.
-    Result [(Some (mph,h,m), day)] describes moon phase [mph], hour [h] and minute
-    [m] when this phase appears and days [day] since last New Moon phase (moon's age).
-    If result is [(None,_)], it tells that there wasn't any moon's phase (one
-    of the mentionned in [moon_phase]) this day. *)
+(** Returns information about moon phase from the given SDN. Result
+    [(Some (mph,h,m), day)] describes moon phase [mph], hour [h] and minute [m]
+    when this phase appears and days [day] since last New Moon phase (moon's
+    age). If result is [(None,_)], it tells that there wasn't any moon's phase
+    (one of the mentionned in [moon_phase]) this day. *)
 val moon_phase_of_sdn : int -> (moon_phase * int * int) option * int

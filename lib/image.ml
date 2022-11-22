@@ -3,9 +3,10 @@ open Gwdb
 
 let prefix conf = Util.escape_html conf.image_prefix
 
-(** [default_portrait_filename_of_key fn sn occ] is the default filename of the corresponding person's portrait. WITHOUT its file extenssion.
- e.g: default_portrait_filename_of_key "Jean Claude" "DUPOND" 3 is "jean_claude.3.dupond"
- *)
+(** [default_portrait_filename_of_key fn sn occ] is the default filename of the
+    corresponding person's portrait. WITHOUT its file extenssion. e.g:
+    default_portrait_filename_of_key "Jean Claude" "DUPOND" 3 is
+    "jean_claude.3.dupond" *)
 let default_portrait_filename_of_key first_name surname occ =
   let space_to_unders = Mutil.tr ' ' '_' in
   let f = space_to_unders (Name.lower first_name) in
@@ -51,7 +52,7 @@ let png_size ic =
     seek_in ic 16;
     let wid = input_binary_int ic in
     let hei = input_binary_int ic in
-    Ok (wid, hei))
+    Ok (wid, hei) )
   else Error ()
 
 let gif_size ic =
@@ -66,7 +67,7 @@ let gif_size ic =
       let x = input_byte ic in
       (input_byte ic * 256) + x
     in
-    Ok (wid, hei))
+    Ok (wid, hei) )
   else Error ()
 
 let jpeg_size ic =
@@ -101,7 +102,7 @@ let jpeg_size ic =
           let d = input_char ic in
           let wid = (Char.code c lsl 8) lor Char.code d in
           let hei = (Char.code a lsl 8) lor Char.code b in
-          Ok (wid, hei))
+          Ok (wid, hei) )
       else
         let a = input_char ic in
         let b = input_char ic in
@@ -142,15 +143,14 @@ let size_from_path fname =
 let rename_portrait conf base p (nfn, nsn, noc) =
   match full_portrait_path conf base p with
   | Some (`Path old_f) -> (
-      let s = default_portrait_filename_of_key nfn nsn noc in
-      let f = Filename.concat (Util.base_path [ "images" ] conf.bname) s in
-      let new_f = f ^ Filename.extension old_f in
-      try Sys.rename old_f new_f
-      with Sys_error e ->
-        !GWPARAM.syslog `LOG_ERR
-          (Format.sprintf
-             "Error renaming portrait: old_path=%s new_path=%s : %s" old_f new_f
-             e))
+    let s = default_portrait_filename_of_key nfn nsn noc in
+    let f = Filename.concat (Util.base_path [ "images" ] conf.bname) s in
+    let new_f = f ^ Filename.extension old_f in
+    try Sys.rename old_f new_f
+    with Sys_error e ->
+      !GWPARAM.syslog `LOG_ERR
+        (Format.sprintf "Error renaming portrait: old_path=%s new_path=%s : %s"
+           old_f new_f e ) )
   | None -> ()
 
 let src_to_string = function `Url s | `Path s -> s
@@ -177,9 +177,9 @@ let has_access_to_portrait conf base p =
   let img = get_image p in
   (not conf.no_image)
   && Util.authorized_age conf base p
-  && (not (is_empty_string img) || full_portrait_path conf base p <> None)
-  && (conf.wizard || conf.friend
-     || not (Mutil.contains (sou base img) "/private/"))
+  && ((not (is_empty_string img)) || full_portrait_path conf base p <> None)
+  && ( conf.wizard || conf.friend
+     || not (Mutil.contains (sou base img) "/private/") )
 (* TODO: privacy settings should be in db not in url *)
 
 let get_portrait_path conf base p =
@@ -201,10 +201,8 @@ let urlorpath_of_string conf s =
     match List.assoc_opt "images_path" conf.base_env with
     | Some p when p <> "" -> `Path (Filename.concat p s)
     | Some _ | None ->
-        let fname =
-          Filename.concat (Util.base_path [ "images" ] conf.bname) s
-        in
-        `Path fname
+      let fname = Filename.concat (Util.base_path [ "images" ] conf.bname) s in
+      `Path fname
   else `Path s
 
 let src_of_string conf s =
@@ -232,28 +230,31 @@ let get_portrait_with_size conf base p =
   if has_access_to_portrait conf base p then
     match src_of_string conf (sou base (get_image p)) with
     | `Src_with_size_info _s as s_info -> (
-        match parse_src_with_size_info conf s_info with
-        | Error _e -> None
-        | Ok (s, size) -> Some (s, Some size))
+      match parse_src_with_size_info conf s_info with
+      | Error _e -> None
+      | Ok (s, size) -> Some (s, Some size) )
     | `Url _s as url -> Some (url, None)
-    | `Path p as path -> if Sys.file_exists p then Some (path, size_from_path path |> Result.to_option) else None
+    | `Path p as path ->
+      if Sys.file_exists p then
+        Some (path, size_from_path path |> Result.to_option)
+      else None
     | `Empty -> (
-        match full_portrait_path conf base p with
-        | None -> None
-        | Some path -> Some (path, size_from_path path |> Result.to_option))
+      match full_portrait_path conf base p with
+      | None -> None
+      | Some path -> Some (path, size_from_path path |> Result.to_option) )
   else None
 
 let get_portrait conf base p =
   if has_access_to_portrait conf base p then
     match src_of_string conf (sou base (get_image p)) with
     | `Src_with_size_info _s as s_info -> (
-        match parse_src_with_size_info conf s_info with
-        | Error _e -> None
-        | Ok (s, _size) -> Some s)
+      match parse_src_with_size_info conf s_info with
+      | Error _e -> None
+      | Ok (s, _size) -> Some s )
     | `Url _s as url -> Some url
     | `Path p as path -> if Sys.file_exists p then Some path else None
     | `Empty -> (
-        match full_portrait_path conf base p with
-        | None -> None
-        | Some path -> Some path)
+      match full_portrait_path conf base p with
+      | None -> None
+      | Some path -> Some path )
   else None

@@ -3,45 +3,48 @@ open Gwdb
 
 (** Authentication scheme data type *)
 type auth_scheme_kind =
-    NoAuth
+  | NoAuth
   | TokenAuth of token_auth_scheme
   | HttpAuth of http_auth_scheme
 
 (** Authentication via security token *)
-and token_auth_scheme = { ts_user : string; ts_pass : string; }
+and token_auth_scheme =
+  { ts_user : string
+  ; ts_pass : string
+  }
 
 (** Authentication via HTTP *)
 and http_auth_scheme =
-    Basic of basic_auth_scheme
+  | Basic of basic_auth_scheme
   | Digest of digest_auth_scheme
 
 (** Basic authentication scheme inside {i Autorization} HTTP header *)
-and basic_auth_scheme = {
-  bs_realm : string;
-  bs_user : string;
-  bs_pass : string;
-}
+and basic_auth_scheme =
+  { bs_realm : string
+  ; bs_user : string
+  ; bs_pass : string
+  }
 
 (** Digest authentication scheme inside {i Autorization} HTTP header *)
-and digest_auth_scheme = {
-  ds_username : string;
-  ds_realm : string;
-  ds_nonce : string;
-  ds_meth : string;
-  ds_uri : string;
-  ds_qop : string;
-  ds_nc : string;
-  ds_cnonce : string;
-  ds_response : string;
-}
+and digest_auth_scheme =
+  { ds_username : string
+  ; ds_realm : string
+  ; ds_nonce : string
+  ; ds_meth : string
+  ; ds_uri : string
+  ; ds_qop : string
+  ; ds_nc : string
+  ; ds_cnonce : string
+  ; ds_response : string
+  }
 
 (** HTTP printer, that prints and sends requests on the user's socket *)
-type output_conf = {
-  status : Def.httpStatus -> unit;
-  header : string -> unit;
-  body : string -> unit;
-  flush : unit -> unit;
-}
+type output_conf =
+  { status : Def.httpStatus -> unit
+  ; header : string -> unit
+  ; body : string -> unit
+  ; flush : unit -> unit
+  }
 
 type env = (string * Adef.encoded_string) list
 
@@ -97,21 +100,22 @@ type config =
   ; today_wd : int
   ; time : int * int * int
   ; ctime : float
-  ; mutable output_conf : output_conf    (* HTTP printer *)
-  (* prefix for image urls:
-     the value of argument -images_url if specified, otherwise
-     command ^ "?m=IM&v=" in CGI mode
-     "images" otherwise *)
+  ; mutable output_conf : output_conf
+        (* HTTP printer *)
+        (* prefix for image urls:
+           the value of argument -images_url if specified, otherwise
+           command ^ "?m=IM&v=" in CGI mode
+           "images" otherwise *)
   ; image_prefix : string
-    (* if true, the base name is in the b argument of the query string: ?b=BASE&...
-       if false, the base name is the last element of the uri path: .../base?... *)
+        (* if true, the base name is in the b argument of the query string: ?b=BASE&...
+           if false, the base name is the last element of the uri path: .../base?... *)
   ; static_path : string
-    (* in CGI mode, provides location of etc files to Apache for direct loading *)
+        (* in CGI mode, provides location of etc files to Apache for direct loading *)
   ; cgi : bool
   ; forced_plugins : string list
   ; plugins : string list
-}
+  }
 
-(** A dummy {!type:config} value, with uninitialized fields.
-    Used for testing purpose *)
+(** A dummy {!type:config} value, with uninitialized fields. Used for testing
+    purpose *)
 val empty : config

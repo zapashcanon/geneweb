@@ -19,6 +19,6 @@ val finish : unit -> unit
 (** Stop printing progression bar and prints a new line. *)
 val suspend : unit -> unit
 
-(** [restart i len] restart progression bar. It's equivalent to call successively
-    [run] from 0 to [i]. *)
+(** [restart i len] restart progression bar. It's equivalent to call
+    successively [run] from 0 to [i]. *)
 val restart : int -> int -> unit

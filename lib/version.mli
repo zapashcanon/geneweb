@@ -1,4 +1,3 @@
-
 (** Current Geneweb version *)
 val txt : string
 

@@ -1,4 +1,3 @@
-
 (** Lists the last births *)
 val print_birth : Config.config -> Gwdb.base -> unit
 

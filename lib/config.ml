@@ -4,26 +4,36 @@ open Def
 open Gwdb
 
 type auth_scheme_kind =
-    NoAuth
+  | NoAuth
   | TokenAuth of token_auth_scheme
   | HttpAuth of http_auth_scheme
 
-and token_auth_scheme = { ts_user : string; ts_pass : string }
+and token_auth_scheme =
+  { ts_user : string
+  ; ts_pass : string
+  }
+
 and http_auth_scheme =
-    Basic of basic_auth_scheme
+  | Basic of basic_auth_scheme
   | Digest of digest_auth_scheme
+
 and basic_auth_scheme =
-  { bs_realm : string; bs_user : string; bs_pass : string }
+  { bs_realm : string
+  ; bs_user : string
+  ; bs_pass : string
+  }
+
 and digest_auth_scheme =
-  { ds_username : string;
-    ds_realm : string;
-    ds_nonce : string;
-    ds_meth : string;
-    ds_uri : string;
-    ds_qop : string;
-    ds_nc : string;
-    ds_cnonce : string;
-    ds_response : string }
+  { ds_username : string
+  ; ds_realm : string
+  ; ds_nonce : string
+  ; ds_meth : string
+  ; ds_uri : string
+  ; ds_qop : string
+  ; ds_nc : string
+  ; ds_cnonce : string
+  ; ds_response : string
+  }
 
 type output_conf =
   { status : Def.httpStatus -> unit
@@ -85,26 +95,27 @@ type config =
   ; today_wd : int
   ; time : int * int * int
   ; ctime : float
-  ; mutable output_conf : output_conf    (* HTTP printer *)
-  (* prefix for image urls:
-     the value of argument -images_url if specified, otherwise
-     command ^ "?m=IM&v=" in CGI mode
-     "images" otherwise *)
+  ; mutable output_conf : output_conf
+        (* HTTP printer *)
+        (* prefix for image urls:
+           the value of argument -images_url if specified, otherwise
+           command ^ "?m=IM&v=" in CGI mode
+           "images" otherwise *)
   ; image_prefix : string
-
   ; static_path : string
-    (* in CGI mode, provides location of etc files to Apache for direct loading *)
+        (* in CGI mode, provides location of etc files to Apache for direct loading *)
 
-  (* if true, the base name is in the b argument of the query string: ?b=BASE&...
-     if false, the base name is the last element of the uri path: .../base?... *)
+        (* if true, the base name is in the b argument of the query string: ?b=BASE&...
+           if false, the base name is the last element of the uri path: .../base?... *)
   ; cgi : bool
   ; forced_plugins : string list
   ; plugins : string list
   }
 
 (**/**)
-(** A dummy {!type:config} value, with uninitialized fields.
-    Used for testing purpose *)
+
+(** A dummy {!type:config} value, with uninitialized fields. Used for testing
+    purpose *)
 let empty =
   { from = ""
   ; manitou = false
@@ -123,7 +134,7 @@ let empty =
   ; highlight = ""
   ; lang = ""
   ; default_lang = ""
-  ; default_sosa_ref = Gwdb.dummy_iper, None
+  ; default_sosa_ref = (Gwdb.dummy_iper, None)
   ; multi_parents = false
   ; authorized_wizards_notes = false
   ; public_if_titles = false
@@ -152,20 +163,17 @@ let empty =
   ; auth_file = ""
   ; border = 0
   ; n_connect = None
-  ; today = { Def.day = 0 ; month = 0 ; year = 0 ; delta = 0 ; prec = Def.Sure }
+  ; today = { Def.day = 0; month = 0; year = 0; delta = 0; prec = Def.Sure }
   ; today_wd = 0
-  ; time = 0,0,0
+  ; time = (0, 0, 0)
   ; ctime = 0.
   ; image_prefix = ""
   ; static_path = ""
   ; cgi = false
   ; output_conf =
-      { status = ignore
-      ; header = ignore
-      ; body = ignore
-      ; flush = ignore
-      }
-  ; forced_plugins =[]
-  ; plugins =[]
+      { status = ignore; header = ignore; body = ignore; flush = ignore }
+  ; forced_plugins = []
+  ; plugins = []
   }
+
 (**/**)

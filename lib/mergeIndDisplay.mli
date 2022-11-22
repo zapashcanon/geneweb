@@ -1,4 +1,3 @@
-
 (** Displays a form for merging two persons *)
 val print : Config.config -> Gwdb.base -> unit
 

@@ -19,24 +19,39 @@ external fix_repr : fix -> int = "%identity"
 (** No consanguinity *)
 val no_consang : fix
 
-(** Date data type that can be either concrete date associated to a calendar or a textual form of the date. *)
+(** Date data type that can be either concrete date associated to a calendar or
+    a textual form of the date. *)
 type date =
-    Dgreg of dmy * calendar
+  | Dgreg of dmy * calendar
   | Dtext of string
 
 (** Supported calendars *)
-and calendar = Dgregorian | Djulian | Dfrench | Dhebrew
+and calendar =
+  | Dgregorian
+  | Djulian
+  | Dfrench
+  | Dhebrew
 
 (** Concrete date with precision. *)
 and dmy =
-  { day : int; month : int; year : int; prec : precision; delta : int }
+  { day : int
+  ; month : int
+  ; year : int
+  ; prec : precision
+  ; delta : int
+  }
 
 (** Concrete date without precision. *)
-and dmy2 = { day2 : int; month2 : int; year2 : int; delta2 : int }
+and dmy2 =
+  { day2 : int
+  ; month2 : int
+  ; year2 : int
+  ; delta2 : int
+  }
 
 (** Precision attached to the concrete date. *)
 and precision =
-    Sure
+  | Sure
   | About
   | Maybe
   | Before
@@ -62,8 +77,8 @@ val od_of_cdate : cdate -> date option
 (** Optional date to [cdate] *)
 val cdate_of_od : date option -> cdate
 
-(** Polymorphic type to represent a family's couple.
-    Couple consists of the father and of the mother. *)
+(** Polymorphic type to represent a family's couple. Couple consists of the
+    father and of the mother. *)
 type 'person gen_couple
 
 (** Get father from couple *)
@@ -75,10 +90,12 @@ val mother : 'a gen_couple -> 'a
 (** [couple f m] creates a couple from father [f] and mother [m] *)
 val couple : 'a -> 'a -> 'a gen_couple
 
-(** Create [gen_couple] from array. First element of array should be father, second - mother  *)
+(** Create [gen_couple] from array. First element of array should be father,
+    second - mother *)
 val parent : 'a array -> 'a gen_couple
 
-(** Returns array from [gen_couple]. First element of array is father, second - mother  *)
+(** Returns array from [gen_couple]. First element of array is father, second -
+    mother *)
 val parent_array : 'a gen_couple -> 'a array
 
 (** @deprecated Use [couple] instead *)
@@ -88,15 +105,27 @@ val multi_couple : 'a -> 'a -> 'a gen_couple
 val multi_parent : 'a array -> 'a gen_couple
 
 type +'a astring = private string
-type safe_string = [`encoded|`escaped|`safe] astring
-type escaped_string = [`encoded|`escaped] astring
-type encoded_string = [`encoded] astring
+
+type safe_string = [ `encoded | `escaped | `safe ] astring
+
+type escaped_string = [ `encoded | `escaped ] astring
+
+type encoded_string = [ `encoded ] astring
+
 val ( ^^^ ) : 'a astring -> 'a astring -> 'a astring
+
 val ( ^>^ ) : 'a astring -> string -> 'a astring
+
 val ( ^<^ ) : string -> 'a astring -> 'a astring
+
 val ( <^> ) : 'a astring -> 'a astring -> bool
+
 val safe : string -> safe_string
+
 val escaped : string -> escaped_string
+
 val encoded : string -> encoded_string
+
 val as_string : 'a astring -> string
+
 val safe_fn : (string -> string) -> 'a astring -> 'a astring

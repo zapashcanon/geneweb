@@ -1,11 +1,11 @@
-
 (* Public functions for API (plugin v7_descend) *)
 
 (** Displays only descendants for specified level in unordered lists *)
 val display_descendants_level :
   Config.config -> Gwdb.base -> int -> Gwdb.person -> unit
 
-(** Displays descendants with numerated by letter list. Title links to descendats index *)
+(** Displays descendants with numerated by letter list. Title links to
+    descendats index *)
 val display_descendants_with_numbers :
   Config.config -> Gwdb.base -> int -> Gwdb.person -> unit
 
@@ -17,32 +17,25 @@ val display_descendant_index :
 val display_spouse_index :
   Config.config -> Gwdb.base -> int -> Gwdb.person -> unit
 
-(** Displays descendants in the table where rows are ordered by D'Aboville number. *)
+(** Displays descendants in the table where rows are ordered by D'Aboville
+    number. *)
 val display_descendant_with_table :
   Config.config -> Gwdb.base -> int -> Gwdb.person -> unit
 
 (** Displays tree of descendants *)
-val print_tree :
-  Config.config -> Gwdb.base -> int -> Gwdb.person -> unit
+val print_tree : Config.config -> Gwdb.base -> int -> Gwdb.person -> unit
 
 (** Displays descendants as follows :
 
-    person
-    | desc1
-    | desc2
-    | | desc21
-    | desc3
-
- *)
-val print_aboville :
-  Config.config -> Gwdb.base -> int -> Gwdb.person -> unit
+    person | desc1 | desc2 | | desc21 | desc3 *)
+val print_aboville : Config.config -> Gwdb.base -> int -> Gwdb.person -> unit
 
 (** Prints form that allows to customise display of descendants *)
-val desmenu_print :
-  Config.config -> Gwdb.base -> Gwdb.person -> unit
+val desmenu_print : Config.config -> Gwdb.base -> Gwdb.person -> unit
 
-(** Displays the descendants of the selected in [conv.env] person. Descendants could be displayed by different ways
-    depending on variable {i t} in [conv.env] environement:
+(** Displays the descendants of the selected in [conv.env] person. Descendants
+    could be displayed by different ways depending on variable {i t} in
+    [conv.env] environement:
 
     - "L" dispalying descendants in unordered list
     - "F" same as "L" but displays only female line
@@ -52,7 +45,8 @@ val desmenu_print :
     - "A" numerated list (d'Aboville)
     - "V" displaying a tree of descendants
 
-    Previous dispalyings are done by template evaluation. Next ones are done by functions inside this module:
+    Previous dispalyings are done by template evaluation. Next ones are done by
+    functions inside this module:
 
     - "B" for [print_aboville]
     - "S" for [display_descendants_level]
@@ -62,9 +56,7 @@ val desmenu_print :
     - "C" for [display_spouse_index]
     - "T" for [print_tree]
 
-    Variable {i v} is used to select maximal level to descend for descendant displaying (1 for children, 2 for
-    grandchildren, etc). If {i t} variable isn't defined, then displays the form that allows
-    customising of display.
-
- *)
+    Variable {i v} is used to select maximal level to descend for descendant
+    displaying (1 for children, 2 for grandchildren, etc). If {i t} variable
+    isn't defined, then displays the form that allows customising of display. *)
 val print : Config.config -> Gwdb.base -> Gwdb.person -> unit

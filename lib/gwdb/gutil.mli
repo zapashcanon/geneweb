@@ -6,28 +6,27 @@ open Gwdb
 (** [spouse p f] returns spouse of giving person inside the family. *)
 val spouse : iper -> family -> iper
 
-(**  Returns list of persons having the giving name as one of the misc names. *)
+(** Returns list of persons having the giving name as one of the misc names. *)
 val person_not_a_key_find_all : base -> string -> iper list
 
-(** Returns list of persons from the giving key. If key has form {i "firstname.occ surname"}
-    then returns list of one corresponding person. Otherwise calls [person_not_a_key_find_all]  *)
+(** Returns list of persons from the giving key. If key has form
+    {i "firstname.occ surname"} then returns list of one corresponding person.
+    Otherwise calls [person_not_a_key_find_all] *)
 val person_ht_find_all : base -> string -> iper list
 
-(** [person_of_string_key base key]
-    Finds a key inside [key] string of the form {i "firstname.occ surname"}
-    and returns a corresponding person.
-    The first occurence of an int preceded by a dot is used as occurence number.
+(** [person_of_string_key base key] Finds a key inside [key] string of the form
+    {i "firstname.occ surname"} and returns a corresponding person. The first
+    occurence of an int preceded by a dot is used as occurence number.
 
     If person doesn't exists or key isn't found then returns [None] *)
 val person_of_string_key : base -> string -> iper option
 
-(** [person_of_string_dot_key base key]
-    Same as {!val:person_of_string_key}, but use the last occurence
-    of an int preceded by a dot as occurence number. *)
+(** [person_of_string_dot_key base key] Same as {!val:person_of_string_key}, but
+    use the last occurence of an int preceded by a dot as occurence number. *)
 val person_of_string_dot_key : base -> string -> iper option
 
-(** Returns list of persons having the same first name and surname
-    as the specified person *)
+(** Returns list of persons having the same first name and surname as the
+    specified person *)
 val find_same_name : base -> person -> person list
 
 (** Returns person's key that has form {i "firstname.occ surname"} *)
@@ -45,11 +44,12 @@ val alphabetic : string -> string -> int
 (** Same as [alphabetic_utf_8] *)
 val alphabetic_order : string -> string -> int
 
-(** Parse line and extract separated arguments ("" and '' are used to indlude spaces
-    inside the argument) *)
+(** Parse line and extract separated arguments ("" and '' are used to indlude
+    spaces inside the argument) *)
 val arg_list_of_string : string -> string list
 
 (** Sort list of persons by comparison with following order:
+
     - Compare by birth and death date
     - Compare by surname
     - Compare by first name
@@ -77,10 +77,7 @@ val parent_array : 'a gen_couple -> 'a array
     and surname. *)
 val find_free_occ : base -> string -> string -> int
 
-
-(** [get_birth_death p]
-    Return [(birth, death, approx)]. If birth/death date can not be found,
-    baptism/burial date is used and [approx] is set to [true] (it is [false]
-    if both birth and death dates are found).
-*)
+(** [get_birth_death p] Return [(birth, death, approx)]. If birth/death date can
+    not be found, baptism/burial date is used and [approx] is set to [true] (it
+    is [false] if both birth and death dates are found). *)
 val get_birth_death_date : person -> date option * date option * bool

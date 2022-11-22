@@ -1,9 +1,9 @@
-
 (** Displays the page list in argument *)
 val print_linked_list :
-  Config.config ->
-  Gwdb.base ->
-  (Gwdb.iper, Gwdb.ifam) Def.NLDB.page list -> unit
+     Config.config
+  -> Gwdb.base
+  -> (Gwdb.iper, Gwdb.ifam) Def.NLDB.page list
+  -> unit
 
 (** Displays the base notes *)
 val print : Config.config -> Gwdb.base -> unit
